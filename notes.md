@@ -76,3 +76,50 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
             - thus, we can distinguish between a processor's
                 - _instruction set architecture (abstractions above)_
                 - _microarchitecture (implementation)_
+
+### 1.3 Running the Program
+
+- _reading `hello` command from keyboard_
+    - shell program reads each character into a register
+    - then stores each character in main memory
+- _leading executable_
+    - copy code and data in `hello` object file from disk to memory
+    - data includes the output string `"hello, world\n"`
+    - uses _direct memory access (DMA)_ to
+        - move data directly from disk to main memory, bypassing CPU
+    - executes `hello`'s `main` routine
+        - copy bytes from output string in memory to register
+        - move bytes from register to display device
+
+### 1.4 Caching
+- The system spends a lot of time moving info from one place to another
+- Because of physical laws:
+    - larger storage devices are slower than smaller ones
+    - Faster devices are more expensive to build
+    - e.g. disk drive may be 1000x larger than main memory
+        - register may store a few hundred bytes, main memory stores billions
+        - processor may take 10000000x longer to read a word from disk > mem
+        - processor may take 100x longer to read from mem > regs
+- _processor-memory gap_ continues to increase
+    - i.e. it's easier/cheaper to increase speed of CPUs than main memory
+- to address the above issues, systems include _cache memories_
+    - _L1 cache_
+        - on the processor chip
+        - holds tens of thousands of bytes
+        - can be accessed nearly as fast as the register file
+    - _L2 cache_
+        - connected to chip by special bus
+        - holds hundreds of thousands to millions of bytes
+        - may take 5x longer than L1, but still 5-10x faster than main mem
+    - some newer systems may even inclued an _L3 cache_
+    - These caches are implemented with _static random access memory (SRAM)_
+    - Exploits _locality_
+        - the tendency for programs to access data/code in localized regions
+
+### 1.5 Memory Hierarchy
+
+- The storage devices of a computer system are organized as a _memory hierarchy_
+    - from top to bottom, devices become larger, slower, and cheaper per byte
+    - register file occupies the top (L0), followed by caches/mem/disk
+    - **storage at one level serves as a cache for the next lowest level**
+    - in distributed systems, a local disk is a cache for remote disks
