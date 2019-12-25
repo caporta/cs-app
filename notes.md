@@ -123,3 +123,53 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
     - register file occupies the top (L0), followed by caches/mem/disk
     - **storage at one level serves as a cache for the next lowest level**
     - in distributed systems, a local disk is a cache for remote disks
+
+### 1.6 The Operating System Manages the Hardware
+
+- Any attempt by an application to manipulate hardware must go through the OS
+- The OS has two primary purposes:
+    - Protect the hardware from misuse by runaway applications
+    - Provide applications with a simple, uniform interface to different hardware
+- The fundamental hierarchical abstractions of the OS are _processes > virtual mem > files_:
+    - _processes_
+        - abstractions for the processor, main memory, and I/O devices
+        - a _process_ is the OS's abstraction for a running program
+        - can be run _concurrently_ (i.e. interleaved) with other procs
+            - concurrency is a result of _multi-core_ processors
+            - interleaving is achieved through _context switching_
+        - a process can be composed of multiple _threads_
+            - multiple execution units within process control flow
+            - run in the same context and share the same code/data
+            - easier to share data between threads than between procs
+    - _virtual memory_
+        - abstraction for main memory and disk I/O devices
+        - provides each process with the illusion of exclusive access to main mem
+        - each process has its _virtual address space_, or uniform view of mem
+        - address contents (from lowest to highest)
+            - _program code and data_
+                - code begins at same fixed address for all processes
+                - followed by data locations corresponding to C globals
+                - fixed in size once the process begins running
+            - _run-time heap_
+                - expands and contracts dynamically at run time
+                    - result of calls to C stdlibs like `malloc` and `free`
+            - _shared libraries_
+                - storage for libs such as the C stdlib and the math lib
+            - _user stack_
+                - used by compiler to implement function calls
+                - like the heap, expands and contracts dynamically
+                - with each function call, the stack grows
+                - each time a function returns, the stack contracts
+            - _kernel virtual memory_
+                - the _kernel_ always resides in memory
+                - applications are not allowed to read/write or call from here
+        - sophisticated hardware translation of CPU-generated addresses must occur
+            - in short, a process's virtual memory is stored on disk
+            - then the main memory is used as a cache
+    - _files_
+        - abstractions for I/O devices
+        - a sequence of bytes
+        - every I/O device is modeled as a file
+        - all system I/O is performed by reading/writing files
+            - uses a small set of system calls called _Unix I/O_
+        - provides a uniform interface for all the varied I/O devices
