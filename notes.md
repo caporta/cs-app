@@ -5,7 +5,8 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
 ## PREFACE
 
 ### x86
-  - umbrella term for IA32 and its extension x86-64
+
+- umbrella term for IA32 and its extension x86-64
 
 
 ## CHAPTER I
@@ -92,6 +93,7 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
         - move bytes from register to display device
 
 ### 1.4 Caching
+
 - The system spends a lot of time moving info from one place to another
 - Because of physical laws:
     - larger storage devices are slower than smaller ones
@@ -111,7 +113,7 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
         - connected to chip by special bus
         - holds hundreds of thousands to millions of bytes
         - may take 5x longer than L1, but still 5-10x faster than main mem
-    - some newer systems may even inclued an _L3 cache_
+    - some newer systems may even include an _L3 cache_
     - These caches are implemented with _static random access memory (SRAM)_
     - Exploits _locality_
         - the tendency for programs to access data/code in localized regions
@@ -130,7 +132,8 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
 - The OS has two primary purposes:
     - Protect the hardware from misuse by runaway applications
     - Provide applications with a simple, uniform interface to different hardware
-- The fundamental hierarchical abstractions of the OS are _processes > virtual mem > files_:
+- hierarchical abstractions of the OS: **processes>virtual mem>files_**
+    - **NOTE** _virtual machine_ can also be included here
     - _processes_
         - abstractions for the processor, main memory, and I/O devices
         - a _process_ is the OS's abstraction for a running program
@@ -141,6 +144,7 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
             - multiple execution units within process control flow
             - run in the same context and share the same code/data
             - easier to share data between threads than between procs
+            - concurrent execution is only _simulated_ in _uniprocessor systems_
     - _virtual memory_
         - abstraction for main memory and disk I/O devices
         - provides each process with the illusion of exclusive access to main mem
@@ -163,7 +167,7 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
             - _kernel virtual memory_
                 - the _kernel_ always resides in memory
                 - applications are not allowed to read/write or call from here
-        - sophisticated hardware translation of CPU-generated addresses must occur
+        - hardware translation of CPU-generated addresses must occur
             - in short, a process's virtual memory is stored on disk
             - then the main memory is used as a cache
     - _files_
@@ -173,3 +177,42 @@ COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
         - all system I/O is performed by reading/writing files
             - uses a small set of system calls called _Unix I/O_
         - provides a uniform interface for all the varied I/O devices
+
+### 1.7 System Communication via Networks
+
+- from the viewpoint of an individual system, the network is just another I/O device
+- system copies a sequence of bytes from main memory to the network adapter
+- email, messaging, www, ftp, and telnet are all based on networking
+
+### 1.8 Concurrency and Parallelism
+
+- _concurrency_ is a system with multiple, simultaneous activities
+- _parallelism_ is the use of concurrency to make a system run faster
+- three levels of parallelism abstraction:
+    - _Thread-Level Concurrency_ (highest level):
+        - used to context switch across multiple threads on a uniprocessor system
+        - _multiprocessor_systems_ have become commonplace as a result of:
+            - _multi-core_ processors
+                several CPUs ("cores") integrated onto a single chip
+            - _hyperthreading (aka simultaneous multi-threading)_
+                - allows a single CPU to execute multiple flows of control
+                    - multiple copies of some CPU hardware (e.g. PCs and regs)
+                    - shared parts (e.g. ALU)
+                - takes better advantage of processing resources
+                    - "copied" resources allow for faster switching
+                    - as the switch doesn't need to fully yield the process block
+                - hyperthreaded CPU executes threads cycle-by-cycle
+    - _Instruction-Level Parallelism_ (lower level)
+        - processors can execute multiple instructions at a time
+        - uses _pipelining_
+            - execution actions are partitioned into a series of _steps_
+            - processor hardware is organized as a series of _stages_
+            - stages can operate in parallel
+            - can sustain close to one instruction per clock cycle
+        - _superscalar_ processors can sustain rates > 1 instruction/clock cycle
+            - supported by most modern processors
+    - _Single-Instruction, Multiple-Data (SIMD) Parallelism_ (lowest level)
+        - modern processors allow a single instruction to execute multiple ops
+            - e.g. adding 4 pairs of single-precision floating-points in parallel
+        - mostly used to speed up image/audio/video data processing
+        - while it can be used in C programs, more reliable to use _vector_ types
