@@ -1,15 +1,4 @@
-COMPUTER SYSTEMS: A PROGRAMMER'S PERSPECTIVE
-===========================================
-
-
-## PREFACE
-
-### x86
-
-- umbrella term for IA32 and its extension x86-64
-
-
-## CHAPTER I
+## CHAPTER 1
 
 ### 1.1 Elements of a Compilation System
 
