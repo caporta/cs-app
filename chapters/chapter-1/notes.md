@@ -22,7 +22,7 @@
 - buses
     - electrical conduits
     - transfer fixed-size chunks of bytes known as _words_
-    - _word size_ is typically 4 or 8 bytes
+    - _word size_ is typically 4 (32b) or 8 bytes (64b)
 - i/o devices
     - keyboards (input), displays (output) disks (storage)
     - connect to the _i/o_ bus in one of two ways
@@ -72,7 +72,7 @@
 - _reading `hello` command from keyboard_
     - shell program reads each character into a register
     - then stores each character in main memory
-- _leading executable_
+- _loading executable_
     - copy code and data in `hello` object file from disk to memory
     - data includes the output string `"hello, world\n"`
     - uses _direct memory access (DMA)_ to
